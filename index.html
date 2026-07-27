@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>202609箱根橫濱旅行手冊</title>
+    <meta property="og:image" content="img/1.jpg">
+    <meta property="og:image:type" content="img/jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <style>
+        /* 基礎樣式與 RWD 設置 */
+        body {
+            font-family: 'Microsoft JhengHei', sans-serif;
+            background: #f7f4ef;
+            color: #222;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+        }
+        .hero {
+            background: linear-gradient(135deg,#dcefff,#ffe8ef);
+            padding: 2.5rem 1rem;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        .hero p {
+            font-size: 1.05rem;
+        }
+        .section {
+            max-width: 900px;
+            margin: 1.5rem auto;
+            background: #fff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+        h2 {
+            color: #3b4a7d;
+            border-left: 8px solid #ffd4e2;
+            padding-left: 0.8rem;
+            font-size: 1.4rem;
+        }
+
+        /* 置頂水平滑動頁籤 (Horizontal Scrollable Tabs) 樣式 */
+        .day-tabs-container {
+            max-width: 900px;
+            margin: 1.5rem auto 0 auto;
+            padding: 0 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #f7f4ef;
+        }
+        .day-tabs {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+            scrollbar-width: none;
+            scroll-behavior: smooth; /* 平滑滾動置中效果 */
+        }
+        .day-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        .tab-btn {
+            background: #fff;
+            border: 2px solid #ddd;
+            color: #555;
+            padding: 0.6rem 1.2rem;
+            font-size: 1.05rem;
+            font-weight: bold;
+            border-radius: 2rem;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: all 0.2s ease;
+        }
+        .tab-btn.active {
+            background: #5c6b9a;
+            border-color: #5c6b9a;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(92, 107, 154, 0.3);
+        }
+
+        /* 頁籤內容面板控制 */
+        .tab-pane {
+            display: none;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* 表格 RWD 與長輩友善放大 */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            min-width: 450px;
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
+            padding: 0.9rem;
+            text-align: left;
+            font-size: 1rem;
+        }
+        th {
+            background: #fff0f5;
+            font-weight: bold;
+        }
+
+        /* 互動 Checkbox 樣式 */
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            margin: 0.8rem 0;
+            display: flex;
+            align-items: center;
+        }
+        .checklist input[type="checkbox"] {
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.8rem;
+            cursor: pointer;
+        }
+        .checklist label {
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        /* 支援自訂代辦事項文字點擊直接編輯 */
+        .checklist label[contenteditable="true"]:hover {
+            background: #fffdf0;
+            outline: 1px dashed #5c6b9a;
+            border-radius: 4px;
+            padding: 0 4px;
+        }
+
+        /* 自訂代辦事項輸入區 */
+        .custom-todo-box {
+            margin-top: 1.2rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ddd;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .custom-todo-box input[type="text"] {
+            flex: 1;
+            padding: 0.6rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+        }
+        .custom-todo-box select {
+            padding: 0.6rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+            background: #fff;
+        }
+        .custom-todo-box button {
+            padding: 0.6rem 1rem;
+            font-size: 1rem;
+            background: #5c6b9a;
+            color: #fff;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+
+        /* 收合選單樣式與線性箭頭優化 */
+        details summary {
+            cursor: pointer;
+            outline: none;
+            list-style: none; /* 隱藏預設三角形 */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        details summary::-webkit-details-marker {
+            display: none; /* 隱藏 Safari 預設三角形 */
+        }
+        /* 以線性偽元素製作箭頭 */
+        details summary::after {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-right: 2px solid #5c6b9a;
+            border-bottom: 2px solid #5c6b9a;
+            transform: rotate(-45deg);
+            transition: transform 0.2s ease;
+            margin-right: 0.5rem;
+        }
+        details[open] summary::after {
+            transform: rotate(45deg);
+        }
+
+        /* 景點圖預留位樣式 */
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .photo-placeholder {
+            aspect-ratio: 4/3;
+            background: #f9f9f9;
+            border-radius: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 0.9rem;
+            text-align: center;
+            overflow: hidden;
+        }
+        .photo-placeholder img {
+            max-height: 100%;
+            height: 100%;
+            max-width: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .footer {
+            margin-top: 1.2rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #ccc;
+            font-size: 0.95rem;
+        }
+        .promise {
+            background: #fff1f6;
+        }
+        .promise li {
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 1.5rem; }
+            .section { margin: 0.8rem 0; padding: 1rem; border-radius: 0; }
+            .photo-grid { grid-template-columns: 1fr; }
+            th, td { font-size: 0.95rem; padding: 0.7rem; }
+            .day-tabs-container { padding: 0; }
+            .day-tabs { padding: 0.5rem 1rem; background: #fff; border-bottom: 1px solid #eee; }
+            .custom-todo-box { flex-direction: column; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero">
+        <h1>箱根・橫濱 6日家庭旅行手冊 ✨</h1>
+        <p>2026/09/19（六）— 2026/09/24（四）</p>
+        <p>含交通、提醒、美食與和平宣誓</p>
+    </div>
+    <div class="section promise">
+        <h2>🫶 行前和平宣誓</h2>
+        <ul>
+            <li>快樂第一：不吵架、不碎念、不抱怨、不比較，保持正向心態，享受當下每一刻，請降低頻率「台灣也有」。</li>
+            <li>需求提早說：想上廁所、渴了、腳痠了，請<b>及早提出</b>。 </li>
+            <li>水分補給：日本餐廳多提供<b>冰水</b>，如有熱水需求請隨身攜帶保溫瓶。</li>
+            <li>互相照顧：互相協助拍照，體諒彼此體力與需求。</li>
+            <li>領隊不是專業的：貝貝語言不通，請耐心等候手機查詢，或自行使用AI拍照翻譯。</li>
+        </ul>
+    </div>
+
+    <!-- 行前提醒預設收合，改用線性箭頭收合指示 -->
+    <div class="section">
+        <details>
+            <summary><h2 style="display:inline-block; border:none; margin:0; padding:0;">✈️ 行前提醒 (Check!)</h2></summary>
+            <ul id="checklist" class="checklist" style="margin-top: 1rem;">
+                <li><input type="checkbox" id="item1"><label for="item1">8/31-9/4新冠疫苗</label></li>
+                <li><input type="checkbox" id="item2"><label for="item2">護照</label></li>
+                <li><input type="checkbox" id="item3"><label for="item3">Visit Japan Web 截圖</label></li>
+                <li><input type="checkbox" id="item4"><label for="item4">eSIM(<a href="https://tw.world-esim.com/stores/japan?esaf=YDTEJEH6" target="_blank">連結</a>8折)/ 漫遊開通</label></li>
+                <li><input type="checkbox" id="item5"><label for="item5">行動電源(*有Wh標示) + 充電線</label></li>
+                <li><input type="checkbox" id="item6"><label for="item6">外套、帽子、口罩 (火山口、山上溫差大)</label></li>
+                <li><input type="checkbox" id="item7"><label for="item7">日幣現金 + 信用卡</label></li>
+                <li><input type="checkbox" id="item8"><label for="item8">購物清單(保養品、保健食品登山用品...等)</label></li>
+            </ul>
+            <div class="custom-todo-box">
+                <select id="userSelect">
+                    <option value="成員1">爸</option>
+                    <option value="成員2">媽</option>
+                    <option value="成員3">貝</option>
+                    <option value="成員4">茜</option>
+                </select>
+                <input type="text" id="customTodoInput" placeholder="自訂代辦事項...">
+                <button type="button" onclick="addCustomTodo()">新增代辦</button>
+            </div>
+        </details>
+    </div>
+
+    <!-- Day 1 ~ Day 6 置頂水平滑動頁籤導覽列 -->
+    <div class="day-tabs-container">
+        <div class="day-tabs" id="dayTabsContainer">
+            <button class="tab-btn active" onclick="switchTab('day1', this)">Day 1 台灣→三島</button>
+            <button class="tab-btn" onclick="switchTab('day2', this)">Day 2 箱根美術館</button>
+            <button class="tab-btn" onclick="switchTab('day3', this)">Day 3 蘆之湖大涌谷</button>
+            <button class="tab-btn" onclick="switchTab('day4', this)">Day 4 三島→橫濱</button>
+            <button class="tab-btn" onclick="switchTab('day5', this)">Day 5 橫濱港未來</button>
+            <button class="tab-btn" onclick="switchTab('day6', this)">Day 6 橫濱→台灣</button>
+        </div>
+    </div>
+
+    <!-- Day 1 行程面板 -->
+    <div id="day1" class="section tab-pane active">
+        <h2>Day 1｜台灣 → 三島 ✈️</h2>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>時間</th>
+                    <th>行程</th>
+                    <th>備註</th>
+                </tr>
+                <tr>
+                    <td>06:00</td>
+                    <td>高鐵前往桃園機場</td>
+                    <td>建議先買早餐</td>
+                </tr>
+                <tr>
+                    <td>07:30-10:50</td>
+                    <td>機場找貝貝報到</td>
+                    <td>提前三小時</td>
+                </tr>
+                <tr>
+                    <td>10:50-15:20</td>
+                    <td>飛往東京</td>
+                    <td>含時差</td>
+                </tr>
+                <tr>
+                    <td>16:30-18:30</td>
+                    <td>成田 → <a href="https://www.google.com/maps/dir/%E6%88%90%E7%94%B0%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4+%E6%97%A5%E6%9C%AC%E3%80%92282-0004+Chiba,+Narita,+Furugome,+1-1/%E5%AF%8C%E5%A3%AB%E5%B1%B1%E4%B8%89%E5%B3%B6%E6%9D%B1%E6%80%A5%E9%A3%AF%E5%BA%97+%E6%97%A5%E6%9C%AC%E3%80%92411-0036+Shizuoka,+Mishima,+Ichibancho,+17%E2%88%921+%E3%83%9F%E3%83%88%E3%83%bf%E3%81%bf%E3%81%97%E3%81%be+%EF%BC%91F/@35.4450857,138.3294584,8z/data=!3m2!4b1!5s0x60199a84dda1d7ff:0xb759639670fb338a!4m18!4m17!1m5!1m1!1s0x6022f379d1bd3757:0xd56e29a162771aa1!2m2!1d140.3843215!2d35.770178!1m5!1m1!1s0x60199b972adad105:0x1901525449d3f3fe!2m2!1d138.911251!2d35.1256481!2m3!6e0!7e2!8j1777476600!3e3?authuser=0&entry=tts&g_ep=EgoyMDI2MDI0Ny4wKgBIAVAD&skid=11777c25-d78e-4523-8408-4ac4e6a4d420" target="_blank">三島</a></td>
+                    <td>約2hr15m，成田特快 → 品川 → 東海道新幹線 至三島</td>
+                </tr>
+                <tr>
+                    <td>19:30</td>
+                    <td>晚餐：蕎麥麵/飯店附近的</td>
+                    <td><a href="https://www.google.com/maps?cid=1801811847894266878" target="_blank">富士山三島東急飯店</a>，超商買隔天外出的水零食</td>
+                </tr>
+            </table>
+            <div class="footer">
+                <b>📢 提醒：</b>
+                <ol>
+                    <li>有電池的產品請放在手提行李</li>
+                    <li>在三島車站買<a href="https://www.hakonenavi.jp/international/tw/discount_passes/free_pass" target="_blank">2日箱根週遊券</a></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Day 2 行程面板 -->
+    <div id="day2" class="section tab-pane">
+        <h2>Day 2｜箱根美術館日 🎨</h2>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>時間</th>
+                    <th>行程</th>
+                    <th>備註</th>
+                </tr>
+                <tr>
+                    <td>09:00-10:00</td>
+                    <td>茜-<a href="https://www.nipponrentacar.co.jp/shop/area/shizuoka/mishima.html?utm_source=google&utm_medium=maps" target="_blank">租車</a> → 開車前往美術館</td>
+                    <td>確認ETC、保險、開車前車子拍照</td>
+                </tr>
+                <tr>
+                    <td>10:00-12:00</td>
+                    <td><a href="https://www.google.com/maps/place/%E7%AE%B1%E6%A0%B9%E9%9B%95%E5%88%BB%E6%A3%AE%E6%9E%97%E7%BE%8E%E8%A1%93%E9%A4%A8/@35.2451601,139.0507271,17z/data=!3m1!4b1!4m6!3m5!1s0x6019a204a396f331:0x588e39a7e90a6c5f!8m2!3d35.2451601!4d139.0507271!16s%2Fm%2F0glpsnt?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">雕刻森林美術館</a></td>
+                    <td>拍照散步</td>
+                </tr>
+                <tr>
+                    <td>12:30-13:30</td>
+                    <td><a href="https://www.google.com/maps/place/%E7%82%B8%E8%B1%86%E8%85%90%E6%8E%92%E8%80%81%E5%BA%97+%E7%94%B0%E3%82%80%E3%82%89%E9%8A%80%E8%80%85%E3%82%AB%E3%83%84%E4%BA%AD/@35.2506021,139.0492807,17z/data=!3m1!4b1!4m6!3m5!1s0x6019a1f856bfca29:0x38a2e88c27678779!8m2!3d35.2506021!4d139.0492807!16s%2Fg%2F1tfhzn5h?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">午餐：炸豬排丼飯(強羅站)</a></td>
+                    <td>強羅站附近的餐廳，或美術館裡面用餐</td>
+                </tr>
+                <tr>
+                    <td>13:30-14:00</td>
+                    <td>搭乘登山纜車：強羅站(車停這) → 公園上站</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>14:00-15:30</td>
+                    <td><a href="https://www.google.com/maps/place/%E7%AE%B1%E6%A0%B9%E7%BE%8E%E8%A1%93%E9%A4%A8/@35.2481942,139.0426937,17z/data=!3m1!4b1!4m6!3m5!1s0x6019a1ffa55705cd:0x77ff84196246bbc0!8m2!3d35.2481942!4d139.0426937!16s%2Fm%2F0nbd4wz?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">箱根美術館+茶屋</a></td>
+                    <td>有時間就去<a href="https://www.google.com/maps/place/%E7%AE%B1%E6%A0%B9%E5%B7%A5%E8%97%9D%E9%A4%A8/@35.2481942,139.0426937,17z/data=!4m16!1m9!3m8!1s0x6019a1ffa55705cd:0x77ff84196246bbc0!2z566x5qC5576O6KGT6aSo!8m2!3d35.2481942!4d139.0426937!9m1!1b1!16s%2Fm%2F0nbd4wz!3m5!1s0x6019a1ff45f0aec5:0xd8702e16a2d5e5ee!8m2!3d35.2483!4d139.045708!16s%2Fg%2F1tf7b4jq?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">箱根工藝館</a></td>
+                </tr>
+                <tr>
+                    <td>15:30-16:00</td>
+                    <td>搭乘登山纜車：公園上站 → 早雲山站</td>
+                    <td>看山景</td>
+                </tr>
+                <tr>
+                    <td>18:00-19:30</td>
+                    <td>晚餐：<a href="https://www.google.com/maps/place/Unagi+Sakuraya/@35.118771,138.9119697,17z/data=!4m6!3m5!1s0x60031edd43c10199:0xf9e187bcbabe20fb!8m2!3d35.118771!4d138.9119697!16s%2Fg%2F1tgkhbjx?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">鰻魚飯</a></td>
+                    <td>回程還車，三島廣小路車站吃，回飯店休息</td>
+                </tr>
+                <tr>
+                    <td>19:30-20:30</td>
+                    <td><a href="https://www.google.com/maps/place/Maxvalu+Express+Mishima+Honcho/@35.1195272,138.9135928,17z/data=!3m1!4b1!4m6!3m5!1s0x601991cde3bbd3bb:0xdd00800f54e334d9!8m2!3d35.1195272!4d138.9135928!16s%2Fg%2F1trpqvr6?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">逛當地超市(買水果零食)</a></td>
+                    <td>自由參加</td>
+                </tr>
+            </table>
+            <div class="footer">
+                <b>📢 提醒：</b>
+                <ol>
+                    <li>確認蘆之湖<a href="https://www.hakonenavi.jp/international/tw/status_information" target="_blank">交通行駛狀況</a></li>
+                    <li>美術館購票</li>
+                    <li>車站確認隔天巴士發車時間</li>
+                </ol>
+            </div>
+        </div>
+        <div class="photo-grid">
+            <div class="photo-placeholder"><img src="img/day2-1.jpg" alt=""></div>
+            <div class="photo-placeholder"><img src="img/day2-2.jpg" alt=""></div>
+            <div class="photo-placeholder"><img src="img/day2-3.jpg" alt=""></div>
+        </div>
+    </div>
+
+    <!-- Day 3 行程面板 -->
+    <div id="day3" class="section tab-pane">
+        <h2>Day 3｜蘆之湖・大涌谷 🚢</h2>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>時間</th>
+                    <th>行程</th>
+                    <th>備註</th>
+                </tr>
+                <tr>
+                    <td>9:00-10:00</td>
+                    <td>🚌 三島站 → 元箱根港</td>
+                    <td>東海巴士N65/N66 系統，約1hr</td>
+                </tr>
+                <tr>
+                    <td>10:00-10:40</td>
+                    <td><a href="https://www.google.com/maps/place/〒250-0522+Kanagawa,+Ashigarashimo+District,+Hakone,+Motohakone,+90-121+エクセレンスリゾート元箱根,+日本/@35.2048263,139.0253782,17z/data=!4m13!1m7!3m6!1s0x6019988bcd2ac2b5:0xaae4a36847c7e09a!2z566x5qC556We56S-!8m2!3d35.2048263!4d139.0253782!16s%2Fm%2F07k8twg!3m4!1s0x6019988bf067aa6b:0x552ef5186ae8841d!8m2!3d35.20655!4d139.0256547?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">箱根神社</a></td>
+                    <td>從三島搭巴士抵達「元箱根港」後，步行去神社</td>
+                </tr>
+                <tr>
+                    <td>10:45-11:30</td>
+                    <td><a href="https://www.google.com/maps/place/%E7%AE%B1%E6%A0%B9%E6%B5%B7%E8%B3%8A%E8%88%B9+%E5%85%83%E7%AE%B1%E6%A0%B9%E6%B8%AF/@35.2009306,139.0305263,17z/data=!3m1!4b1!4m6!3m5!1s0x6019987d3a7c6a3d:0xefdd4cc47e408215!8m2!3d35.2009306!4d139.0305263!16s%2Fg%2F121nm7cv?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">海賊船</a>(元箱根港 → 桃源台港)單段航程大約35min</td>
+                    <td>傳票升等可上甲板，(貝)購買小田原精釀可樂</td>
+                </tr>
+                <tr>
+                    <td>11:30-12:00</td>
+                    <td>空中纜車(桃源台港 → 大涌谷)</td>
+                    <td>單趟20min</td>
+                </tr>
+                <tr>
+                    <td>12:00-14:10</td>
+                    <td><a href="https://www.google.com/maps/place/%E5%A4%A7%E6%B6%8C%E8%B0%B7/data=!4m2!3m1!1s0x0:0xa1a85246ffb15c8a?sa=X&ved=1t:2428&ictx=111" target="_blank">大涌谷</a>地理導覽</td>
+                    <td>先吃<a href="https://www.google.com/maps?cid=9323156447747905345" target="_blank">午餐</a>，導覽13:00集合</td>
+                </tr>
+                <tr>
+                    <td>14:20-15:35</td>
+                    <td>回程：纜車＋船(大涌谷 → 桃源台 → 箱根町港)</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>15:45-16:30</td>
+                    <td><a href="https://www.google.com/maps/place/%E7%AE%B1%E6%A0%B9%E9%97%9C%E6%89%80/data=!4m2!3m1!1s0x60199864f16917f3:0x2367a5762e15a545?sa=X&ved=1t:155783&ictx=111" target="_blank">箱根關所</a>16:30打烊</td>
+                    <td>如果有體力可購票參觀</td>
+                </tr>
+                <tr>
+                    <td>17:10(末班車，提前30分鐘排隊)</td>
+                    <td>🚌 回三島站</td>
+                    <td>箱根町港 3 號乘車處，標註往「三島駅」</td>
+                </tr>
+                <tr>
+                    <td>18:30-19:30</td>
+                    <td>吃晚餐<a href="https://www.google.com/maps/place/%E5%AE%8C%E5%85%A8%E5%80%8B%E5%AE%A4+%E6%B5%B7%E9%AE%AE%E3%81%A8%E7%94%A3%E5%9C%B0%E9%B6%8F%E3%81%ның+%E7%82%AD%E7%81%AB%E7%84%BC+%E3%81%86%E3%81%8A%E9%B6%8F%E4%B8%89%E5%B3%B6%E5%BA%97/@35.12418,138.913101,17z/data=!3m1!4b1!4m6!3m5!1s0x60199b1ab106d68f:0xb741c9446b4dff7a!8m2!3d35.12418!4d138.913101!16s%2Fg%2F11tsmz9f4d?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">(鍋物＆生魚片)</a></td>
+                    <td>-</td>
+                </tr>
+            </table>
+            <div class="footer">
+                <b>📢 提醒：</b>
+                <ol>
+                    <li>確認蘆之湖<a href="https://www.hakonenavi.jp/international/tw/status_information" target="_blank">交通行駛狀況</a></li>
+                    <li>確認<a href="https://www.hakonenavi.jp/transportation/ticket_info/search/timetable/detail/?timetableNo=S8001-001-001" target="_blank">船班時間</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="photo-grid">
+            <div class="photo-placeholder"><img src="img/day3-1.jpg" alt=""></div>
+            <div class="photo-placeholder"><img src="img/day3-2.webp" alt=""></div>
+            <div class="photo-placeholder"><img src="img/day3-3.webp" alt=""></div>
+        </div>
+    </div>
+
+    <!-- Day 4 行程面板 -->
+    <div id="day4" class="section tab-pane">
+        <h2>Day 4｜三島 → 橫濱 🛍️</h2>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>時間</th>
+                    <th>行程</th>
+                    <th>備註</th>
+                </tr>
+                <tr>
+                    <td>9:30</td>
+                    <td>飯店check out</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>10:00-11:30</td>
+                    <td>前往三島 → 橫濱</td>
+                    <td>約1.5hr，在車站買零食</td>
+                </tr>
+                <tr>
+                    <td>11:30-12:30</td>
+                    <td><a href="https://www.google.com/maps?cid=11687705837165286464" target="_blank">橫濱飯店</a>check in，寄放行李</td>
+                    <td>橫濱站東口相鐵FRESA INN飯店</td>
+                </tr>
+                <tr>
+                    <td>12:30-14:30</td>
+                    <td>高島屋百貨吃午餐</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>14:30-15:30</td>
+                    <td>茜家</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>15:30-20:30</td>
+                    <td>MITSUI OUTLET PARK (含吃晚餐)</td>
+                    <td>車程1hr10min，購物行程，有時間可先去<a href="https://www.google.com/maps/place/Yokohama+Nanbu+Market/@35.3812105,139.6361249,14z/data=!3m1!5s0x60185c1271686695:0xce25fca3dcb3b78!4m14!1m7!3m6!1s0x60185c12137245e1:0x5bb5e8b924233af5!2z6IyF5LmD6IiNIOmrmOWztuWxi-apq-a_seW6lw!8m2!3d35.4663584!4d139.6210579!16s%2Fg%2F11b7txk7hx!3m5!1s0x6018430eb50e98b1:0x70cc2714c6a364b3!8m2!3d35.3816801!4d139.633957!16s%2Fg%2F121vrgwx?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">橫濱南部市場</a></td>
+                </tr>
+                <tr>
+                    <td>20:30-21:10</td>
+                    <td>回程OUTLET→ 飯店</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>21:10～</td>
+                    <td>逛當地超市＋買藥妝</td>
+                    <td>自由參加</td>
+                </tr>
+            </table>
+            <div class="footer">
+                <b>📢 提醒：</b>
+                <ol>
+                    <li>飯店不含早餐，可提前購買隔日要吃的東西</li>
+                    <li>(貝)購買橫濱精釀可樂</li>
+                </ol>
+            </div>
+        </div>
+        <div class="photo-grid">
+            <div class="photo-placeholder"><img src="img/day4-1.webp" alt=""></div>
+            <div class="photo-placeholder"><img src="img/day4-2.webp" alt=""></div>
+            <div class="photo-placeholder"><img src="img/day4-3.webp" alt=""></div>
+        </div>
+    </div>
+
+    <!-- Day 5 行程面板 -->
+    <div id="day5" class="section tab-pane">
+        <h2>Day 5｜橫濱港未來 🌃</h2>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>時間</th>
+                    <th>行程</th>
+                    <th>備註</th>
+                </tr>
+                <tr>
+                    <td>10:00-12:30</td>
+                    <td><a href="https://www.google.com/maps?cid=8316009374312643262" target="_blank">合味道紀念館</a></td>
+                    <td>泡麵DIY 40min，觀光工廠裡有小份拉麵可以嘗試</td>
+                </tr>
+                <tr>
+                    <td>12:30-15:00</td>
+                    <td>步行-<a href="https://www.google.com/maps?cid=10706320581550947699" target="_blank">紅磚倉庫</a> →<a href="https://www.google.com/maps?cid=15344611525273189660" target="_blank"> 開港紀念會館</a></td>
+                    <td>美食空間、時裝店和雜貨店等各種風格的店家，如果不想逛街可以去<a href="https://www.google.com/maps/place/Yokohama+Market+Fisheries+Department/@35.4675946,139.6324937,17z/data=!3m1!4b1!4m6!3m5!1s0x60185db9b36118c9:0xb19cb19fae5dbd44!8m2!3d35.4675903!4d139.6350686!16s%2Fg%2F1239_9sv?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">海產批發市場</a></td>
+                </tr>
+                <tr>
+                    <td>15:30-17:30</td>
+                    <td><a href="https://www.google.com/maps/place/%E6%A9%AB%E6%BF%B1%E6%B8%AF%E6%9C%AA%E4%BE%86+%E8%90%ANC%E8%91%89%E4%BF%B1%E6%A8%82%E9%83%A8/@35.4557045,139.6364626,17.91z/data=!3m1!5s0x60185c40ae44fcaf:0x1481fb391354f061!4m17!1m7!3m6!1s0x60185db9b36118c9:0xb19cb19fae5dbd44!2sYokohama+Market+Fisheries+Department!8m2!3d35.4675903!4d139.6350686!16s%2Fg%2F1239_9sv!3m8!1s0x60185c5a250b178d:0x33cc04e3399ff8cd!5m2!4m1!1i2!8m2!3d35.4559439!4d139.6382009!16s%2Fg%2F1pp2vdt4g?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">萬葉俱樂部</a></td>
+                    <td>泡湯看日落</td>
+                </tr>
+                <tr>
+                    <td>17:30-18:00</td>
+                    <td>搭<a href="https://www.google.com/maps/place/YOKOHAMA+AIR+CABIN+Unga+Park+Station/@35.4538371,139.6369051,18.23z/data=!3m1!5s0x60185c40ae44fcaf:0x1481fb391354f061!4m14!1m7!3m6!1s0x60185db9b36118c9:0xb19cb19fae5dbd44!2sYokohama+Market+Fisheries+Department!8m2!3d35.4675903!4d139.6350686!16s%2Fg%2F1239_9sv!3m5!1s0x60185de98b245a31:0xfc13389c7fb839a3!8m2!3d35.453251!4d139.6383187!16s%2Fg%2F11q7zm7hbx?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">空中纜車</a> → 櫻木町</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>18:00-20:00</td>
+                    <td>晚餐-<a href="https://www.google.com/maps/place/UMAYA+by+Yokohama+Beer/@35.4503858,139.630665,16.19z/data=!3m1!5s0x60185cf5f1f88fbd:0xa399326f7b79ee34!4m14!1m7!3m6!1s0x60185db9b36118c9:0xb19cb19fae5dbd44!2sYokohama+Market+Fisheries+Department!8m2!3d35.4675903!4d139.6350686!16s%2Fg%2F1239_9sv!3m5!1s0x60185cf5f1feefb3:0x7ea655816198a3fa!8m2!3d35.4486315!4d139.6340913!16s%2Fg%2F1tf_1167?entry=ttu&g_ep=EgoyMDI2MDUxMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">精釀啤酒餐廳</a></td>
+                    <td>步行至餐廳約11min</td>
+                </tr>
+            </table>
+             <div class="footer">
+                <b>📢 提醒：</b>
+                <ol>
+                    <li>8/1<a href="https://www.e-tix.jp/cupnoodles-museum.jp/en/" target="_blank">預約泡麵DIY</a></li>
+                    <li>飯店不含早餐，可提前購買隔日要吃的東西</li>
+                    <li>整理行李，電池產品請放手提</li>
+                </ol>
+            </div>
+        </div>
+        <div class="photo-grid">
+            <div class="photo-placeholder"><img src="img/day5-1.jpg" alt=""></div>
+            <div class="photo-placeholder"><img src="img/day5-2.jpg" alt=""></div>
+            <div class="photo-placeholder"><img src="img/day5-3.jpg" alt=""></div>
+        </div>
+    </div>
+
+    <!-- Day 6 行程面板 -->
+    <div id="day6" class="section tab-pane">
+        <h2>Day 6｜橫濱 → 台灣 🏠</h2>
+        <div class="table-container">
+            <table>
+                <tr>
+                    <th>時間</th>
+                    <th>行程</th>
+                    <th>備註</th>
+                </tr>
+                <tr>
+                    <td>08:00</td>
+                    <td>飯店check out</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>08:30-10:15</td>
+                    <td>Packages / 前往機場</td>
+                    <td>車上吃早餐</td>
+                </tr>
+                <tr>
+                    <td>返台</td>
+                    <td>搭高鐵/包車回家</td>
+                    <td>＊高雄包車＆桃園8/27搶中秋高鐵票</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- 原生 JavaScript 互動邏輯 -->
+    <script>
+        // 初次載入強制置頂，避免被記憶滾動留在中段
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+        });
+
+        // 切換 Day 頁籤，並讓該頁籤平滑置中顯示於水平選單中
+        function switchTab(dayId, btnElement) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            const panes = document.querySelectorAll('.tab-pane');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            panes.forEach(pane => pane.classList.remove('active'));
+
+            const targetPane = document.getElementById(dayId);
+            if (targetPane) {
+                targetPane.classList.add('active');
+            }
+
+            btnElement.classList.add('active');
+
+            // 讓被點擊的按鈕水平滾動置中 (Horizontal scroll into view)
+            btnElement.scrollIntoView({
+                behavior: 'smooth',
+                inline: 'center',
+                block: 'nearest'
+            });
+        }
+
+        // 動態新增個人代辦事項（支援 4 位使用者，並支援文字直接編輯）
+        let todoCounter = 9;
+        function addCustomTodo() {
+            const input = document.getElementById('customTodoInput');
+            const userSelect = document.getElementById('userSelect');
+            const checklist = document.getElementById('checklist');
+
+            const text = input.value.trim();
+            if (!text) {
+                alert('請輸入代辦事項內容！');
+                return;
+            }
+
+            const userName = userSelect.value;
+            const itemId = 'custom_item_' + (todoCounter++);
+
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <input type="checkbox" id="${itemId}">
+                <label for="${itemId}" contenteditable="true" title="點擊即可直接編輯文字">[${userName}] ${text}</label>
+            `;
+
+            checklist.appendChild(li);
+            input.value = '';
+        }
+    </script>
+</body>
+
+</html>
