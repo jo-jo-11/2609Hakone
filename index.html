@@ -24,7 +24,7 @@
         }
         .hero {
             background: linear-gradient(135deg,#dcefff,#ffe8ef);
-            padding: 2.5rem 1rem;
+            padding: 1rem;
             text-align: center;
         }
         .hero h1 {
@@ -59,6 +59,10 @@
             top: 0;
             z-index: 100;
             background: #f7f4ef;
+            transition: box-shadow 0.2s ease;
+        }
+        .day-tabs-container.is-sticky {
+            box-shadow: 0 8px 16px rgba(34, 34, 34, 0.3);
         }
         .day-tabs {
             display: flex;
@@ -264,7 +268,6 @@
     <div class="hero">
         <h1>箱根・橫濱 6日家庭旅行手冊 ✨</h1>
         <p>2026/09/19（六）— 2026/09/24（四）</p>
-        <p>含交通、提醒、美食與和平宣誓</p>
     </div>
     <div class="section promise">
         <h2>🫶 行前和平宣誓</h2>
@@ -639,7 +642,21 @@
     window.addEventListener('load', () =>
     {
         window.scrollTo(0, 0);
+        updateDayTabsShadow();
     });
+
+    window.addEventListener('scroll', updateDayTabsShadow);
+
+    function updateDayTabsShadow()
+    {
+        const tabsContainer = document.querySelector('.day-tabs-container');
+        if (!tabsContainer)
+        {
+            return;
+        }
+
+        tabsContainer.classList.toggle('is-sticky', tabsContainer.getBoundingClientRect().top <= 0);
+    }
 
     // 切換 Day 頁籤，並讓該頁籤平滑置中顯示於水平選單中
     function switchTab(dayId, btnElement)
