@@ -33,6 +33,7 @@
         }
         .hero p {
             font-size: 1.05rem;
+            margin: 0;
         }
         .section {
             max-width: 900px;
@@ -153,7 +154,7 @@
             border: 1px solid #ddd;
             padding: 0.9rem;
             text-align: left;
-            font-size: 1.05rem;
+/*            font-size: 1.05rem;*/
         }
 
         th {
@@ -242,21 +243,20 @@
             margin-top: 1.2rem;
             padding-top: 1rem;
             border-top: 1px dashed #ccc;
-            font-size: 0.95rem;
         }
         .promise {
             background: #fff1f6;
         }
         .promise li {
             margin-bottom: 0.5rem;
-            font-size: 1.05rem;
         }
 
         @media (max-width: 600px) {
             .hero h1 { font-size: 1.5rem; }
             .section { margin: 0.8rem 0; padding: 1rem; border-radius: 0; }
             .photo-grid { grid-template-columns: 1fr; }
-            th, td { font-size: 1rem; padding: 0.7rem; }
+            th, td {  padding: 0.7rem; }
+            th{font-size: 1rem;}
             th { width: 3rem; white-space: initial;}
             .day-tabs-container { padding: 0; }
             .day-tabs { padding: 0.5rem 1rem; background: #fff; border-bottom: 1px solid #eee; }
