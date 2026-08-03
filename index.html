@@ -100,6 +100,42 @@
             display: block;
         }
 
+        .route-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0 0.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .route-tabs::-webkit-scrollbar {
+            display: none;
+        }
+        .route-tab-btn {
+            background: rgba(221, 221, 221, 0.2);
+            border: 2px solid rgba(59, 74, 125, 0.4);
+            color: #3b4a7d;
+            padding: 0.55rem 1rem;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: .2rem;
+            cursor: pointer;
+            flex: 1;
+            min-width: 0;
+            transition: all 0.2s ease;
+        }
+        .route-tab-btn.active {
+            background: #fff0f5;
+            border-color: #5c6b9a;
+            color: #222;
+            box-shadow: 0 3px 8px rgba(92, 107, 154, 0.18);
+        }
+        .day3-route-panel {
+            display: none;
+        }
+        .day3-route-panel.active {
+            display: block;
+        }
+
         /* 表格 RWD 與長輩友善放大 */
         .table-container {
             width: 100%;
@@ -143,46 +179,6 @@
             cursor: pointer;
             font-size: 1.1rem;
         }
-        /* 支援自訂代辦事項文字點擊直接編輯 */
-        .checklist label[contenteditable="true"]:hover {
-            background: #fffdf0;
-            outline: 1px dashed #5c6b9a;
-            border-radius: 4px;
-            padding: 0 4px;
-        }
-
-        /* 自訂代辦事項輸入區 */
-        .custom-todo-box {
-            margin-top: 1.2rem;
-            padding-top: 1rem;
-            border-top: 1px dashed #ddd;
-            display: flex;
-            gap: 0.5rem;
-        }
-        .custom-todo-box input[type="text"] {
-            flex: 1;
-            padding: 0.6rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 0.5rem;
-        }
-        .custom-todo-box select {
-            padding: 0.6rem;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 0.5rem;
-            background: #fff;
-        }
-        .custom-todo-box button {
-            padding: 0.6rem 1rem;
-            font-size: 1rem;
-            background: #5c6b9a;
-            color: #fff;
-            border: none;
-            border-radius: 0.5rem;
-            cursor: pointer;
-        }
-
         /* 收合選單樣式與線性箭頭優化 */
         details summary {
             cursor: pointer;
@@ -260,7 +256,6 @@
             th { width: 3rem; white-space: initial;}
             .day-tabs-container { padding: 0; }
             .day-tabs { padding: 0.5rem 1rem; background: #fff; border-bottom: 1px solid #eee; }
-            .custom-todo-box { flex-direction: column; }
         }
     </style>
 </head>
@@ -275,7 +270,7 @@
         <h2>🫶 行前和平宣誓</h2>
         <ul>
             <li>快樂第一：不吵架、不碎念、不抱怨、不比較，保持正向心態，享受當下每一刻，請降低頻率「台灣也有」。</li>
-            <li>需求提早說：想上廁所、渴了、腳痠了，請<b>及早提出</b>。 </li>
+            <li>需求提早說：想上廁所、渴了、腳痠、想睡，請<b>及早提出</b>。 </li>
             <li>水分補給：日本餐廳多提供<b>冰水</b>，如有熱水需求請隨身攜帶保溫瓶。</li>
             <li>互相照顧：互相協助拍照，體諒彼此體力與需求。</li>
             <li>領隊不是專業的：貝貝語言不通，請耐心等候手機查詢，或自行使用AI拍照翻譯。</li>
@@ -291,22 +286,13 @@
                 <li><input type="checkbox" id="item1"><label for="item1">8/31-9/4新冠疫苗</label></li>
                 <li><input type="checkbox" id="item2"><label for="item2">護照</label></li>
                 <li><input type="checkbox" id="item3"><label for="item3">Visit Japan Web 截圖</label></li>
-                <li><input type="checkbox" id="item4"><label for="item4">eSIM(<a href="https://tw.world-esim.com/stores/japan?esaf=YDTEJEH6" target="_blank">連結</a>8折)/ 漫遊開通</label></li>
+                <li><input type="checkbox" id="item4"><label for="item4">eSIM(<a href="https://tw.world-esim.com/stores/japan?esaf=YDTEJEH6" target="_blank">連結</a>8折)</label></li>
                 <li><input type="checkbox" id="item5"><label for="item5">行動電源(*有Wh標示) + 充電線</label></li>
                 <li><input type="checkbox" id="item6"><label for="item6">外套、帽子、口罩、衛生紙、濕紙巾(火山口、山上溫差大)</label></li>
+                <li>攜帶三套以上的衣服，橫濱飯店有洗衣機可使用</li>
                 <li><input type="checkbox" id="item7"><label for="item7">日幣現金 + 信用卡3%回饋以上</label></li>
                 <li><input type="checkbox" id="item8"><label for="item8">購物清單(保養品、保健食品登山用品...等)</label></li>
             </ul>
-            <div class="custom-todo-box">
-                <select id="userSelect">
-                    <option value="成員1">爸</option>
-                    <option value="成員2">媽</option>
-                    <option value="成員3">貝</option>
-                    <option value="成員4">茜</option>
-                </select>
-                <input type="text" id="customTodoInput" placeholder="自訂代辦事項...">
-                <button type="button" onclick="addCustomTodo()">新增代辦</button>
-            </div>
         </details>
     </div>
     <!-- Day 1 ~ Day 6 置頂水平滑動頁籤導覽列 -->
@@ -326,20 +312,20 @@
         <div class="table-container">
             <table>
                 <tr>
-                    <th>06:00</th>
-                    <td>高鐵前往桃園機場（建議先買早餐）</td>
+                    <th>06:00-7:44</th>
+                    <td>高鐵前往桃園機場(建議先買早餐)</td>
                 </tr>
                 <tr>
-                    <th>07:30-10:50</th>
-                    <td>機場找貝貝報到（提前三小時）</td>
+                    <th>08:00-10:50</th>
+                    <td>搭機場捷運，機場找貝貝報到</td>
                 </tr>
                 <tr>
                     <th>10:50-15:20</th>
-                    <td>飛往東京（含時差）</td>
+                    <td>樂桃MM626-飛往東京(含時差)</td>
                 </tr>
                 <tr>
                     <th>16:30-18:30</th>
-                    <td>成田 → <a href="https://www.google.com/maps/dir/%E6%88%90%E7%94%B0%E5%9C%8B%E9%9A%9B%E6%A9%9F%E5%A0%B4+%E6%97%A5%E6%9C%AC%E3%80%92282-0004+Chiba,+Narita,+Furugome,+1-1/%E5%AF%8C%E5%A3%AB%E5%B1%B1%E4%B8%89%E5%B3%B6%E6%9D%B1%E6%80%A5%E9%A3%AF%E5%BA%97+%E6%97%A5%E6%9C%AC%E3%80%92411-0036+Shizuoka,+Mishima,+Ichibancho,+17%E2%88%921+%E3%83%9F%E3%83%88%E3%83%bf%E3%81%bf%E3%81%97%E3%81%be+%EF%BC%91F/@35.4450857,138.3294584,8z/data=!3m2!4b1!5s0x60199a84dda1d7ff:0xb759639670fb338a!4m18!4m17!1m5!1m1!1s0x6022f379d1bd3757:0xd56e29a162771aa1!2m2!1d140.3843215!2d35.770178!1m5!1m1!1s0x60199b972adad105:0x1901525449d3f3fe!2m2!1d138.911251!2d35.1256481!2m3!6e0!7e2!8j1777476600!3e3?authuser=0&entry=tts&g_ep=EgoyMDI2MDI0Ny4wKgBIAVAD&skid=11777c25-d78e-4523-8408-4ac4e6a4d420" target="_blank">三島</a>（約2hr15m，成田特快 → 品川 → 東海道新幹線 至三島）</td>
+                    <td>成田 → 三島（約2hr15m，成田特快 → 品川 → 東海道新幹線 至三島）<br>成田特快16:44-17:53/17:16-18:27</td>
                 </tr>
                 <tr>
                     <th>19:30</th>
@@ -350,6 +336,7 @@
                 <b>📢 提醒：</b>
                 <ol>
                     <li>有電池的產品請放在手提行李</li>
+                    <li>個人物品1件，手提1件7kg，托運20kg</li>
                     <li>在三島車站買<a href="https://www.hakonenavi.jp/international/tw/discount_passes/free_pass" target="_blank">2日箱根週遊券</a></li>
                 </ol>
             </div>
@@ -398,7 +385,6 @@
                 <ol>
                     <li>確認蘆之湖<a href="https://www.hakonenavi.jp/international/tw/status_information" target="_blank">交通行駛狀況</a></li>
                     <li>美術館購票</li>
-                    <li>車站確認隔天巴士發車時間</li>
                 </ol>
             </div>
         </div>
@@ -410,59 +396,70 @@
     </div>
     <!-- Day 3 行程面板 -->
     <div id="day3" class="section tab-pane">
-        <h2>Day 3｜蘆之湖・大涌谷 🚢</h2>
-        <div class="table-container">
-            <table>
-                <tr>
-                    <th>9:00-10:40</th>
-                    <td>🚌 三島站 → <a href="https://maps.app.goo.gl/XHv7hJjhaXXZWxYH6" target="_blank">箱根神社</a>（箱根神社参拝者第１駐車場，車程約45min）</td>
-                </tr>
-                <tr>
-                    <th>10:45-11:30</th>
-                    <td><a href="https://maps.app.goo.gl/PDDbYbaqWxrtwW4T8" target="_blank">海賊船</a>(<a href="https://www.hakonenavi.jp/transportation/ticket_info/search/timetable/detail/?timetableNo=S8003-001-001" target="_blank">元箱根港</a> → 桃源台港)單段航程大約25min，船票升等可上甲板，<a href="https://www.hakonenavi.jp/hakone-kankosen/" target="_blank">票價＆路線圖</a></td>
-                </tr>
-                <tr>
-                    <th>11:30-12:00</th>
-                    <td>空中纜車(桃源台港 → 大涌谷)（單趟20min）</td>
-                </tr>
-                <tr>
-                    <th>12:00-14:10</th>
-                    <td><a href="https://maps.app.goo.gl/3h7E9GEqBBykU8nq9" target="_blank">大涌谷</a>地理導覽（<a href="https://www.google.com/maps?cid=9323156447747905345" target="_blank">午餐</a>，導覽40min，13:00集合，一人¥800）</td>
-                </tr>
-                <tr>
-                    <th>14:20-14:40 ~<br>15:10-15:35</th>
-                    <td>回程：纜車＋船(大涌谷 → <a href="https://www.hakonenavi.jp/transportation/ticket_info/search/timetable/detail/?timetableNo=S8001-001-001" target="_blank">桃源台</a> → 箱根町港)</td>
-                </tr>
-                <tr>
-                    <th>15:45-16:30</th>
-                    <td><a href="https://share.google/eqMfJbtNW9kBtMgNH" target="_blank">箱根關所</a>16:30打烊（如果有體力可購票參觀）</td>
-                </tr>
-                <tr>
-                    <th>17:10～</th>
-                    <td>取車回三島市</td>
-                </tr>
-                <tr>
-                    <th>18:30-19:30</th>
-                    <td>吃晚餐<a href="https://share.google/shA95vCqpTYD9R12T" target="_blank">(鍋物＆生魚片)</a></td>
-                </tr>
-            </table>
-            <div class="footer">
-                <b>📢 提醒：</b>
-                <ol>
-                    <li><a href="https://www.hakone.or.jp/od-booking/?m=cal&ye=2026&mo=9&p=3" target="_blank">預約大湧谷導覽</a></li>
-                    <li>確認蘆之湖<a href="https://www.hakonenavi.jp/international/tw/status_information" target="_blank">交通行駛狀況</a></li>
-                    <li>確認<a href="https://www.hakonenavi.jp/transportation/ticket_info/search/timetable/detail/?timetableNo=S8001-001-001" target="_blank">船班時間</a></li>
-                </ol>
+        <h2>Day 3</h2>
+        <div class="route-tabs" aria-label="Day 3 行程切換">
+            <button class="route-tab-btn active" type="button" onclick="switchDay3Plan('day3-hakone', this)">蘆之湖・大涌谷 🚢</button>
+            <button class="route-tab-btn" type="button" onclick="switchDay3Plan('day3-atami', this)">(備案)<br> 熱海・神社與庭園⛩️</button>
+        </div>
+        <div id="day3-hakone" class="day3-route-panel active">
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>9:00-11:00</th>
+                        <td>🚗開車 → 箱根神社（箱根神社参拝者第１駐車場，車程約40min）</td>
+                    </tr>
+                    <tr>
+                        <th>11:00-11:45</th>
+                        <td><a href="https://maps.app.goo.gl/XHv7hJjhaXXZWxYH6" target="_blank">參觀箱根神社</a></td>
+                    </tr>
+                    <tr>
+                        <th>12:00-13:30</th>
+                        <td>🚗開車 → 桃源台港附近吃午餐</td>
+                    </tr>
+                  
+                    <tr>
+                        <th>13:30-14:00</th>
+                        <td>空中纜車單趟20min(桃源台港 → 大涌谷)</td>
+                    </tr>
+                    <tr>
+                        <th>14:15-15:30</th>
+                        <td><a href="https://maps.app.goo.gl/Sx9csLPgERQ1BAwM8" target="_blank">大涌谷</a>地理導覽（導覽40min/14:30場次，1人¥800）</td>
+                    </tr>
+                   
+                    <tr>
+                        <th>15:30-16:00</th>
+                        <td>回程纜車(大涌谷 → 桃源台)</td>
+                    </tr>
+                     <tr>
+                        <th>16:25-17:30</th>
+                        <td>看有沒有要環湖，海賊船-<a href="https://www.hakonenavi.jp/transportation/ticket_info/search/timetable/detail/?timetableNo=S8003-001-001" target="_blank">桃源台港</a>來回大約1hr，船票升等可上甲板，<a href="https://www.hakonenavi.jp/hakone-kankosen/" target="_blank">路線圖</a></td>
+                    </tr>
+                    <tr>
+                        <th>17:30～</th>
+                        <td>取車回三島市</td>
+                    </tr>
+                    <tr>
+                        <th>19:30-19:30</th>
+                        <td>吃晚餐<a href="https://share.google/shA95vCqpTYD9R12T" target="_blank">(鍋物＆生魚片)</a></td>
+                    </tr>
+                </table>
+                <div class="footer">
+                    <b>📢 提醒：</b>
+                    <ol>
+                        <li>確認大湧谷<a href="https://www.hakone.or.jp/od-booking/" target="_blank">入場状況</a></li>
+                        <li>確認蘆之湖<a href="https://www.hakonenavi.jp/international/tw/status_information" target="_blank">交通行駛狀況</a></li>
+                        <li>確認<a href="https://www.hakonenavi.jp/transportation/ticket_info/search/timetable/detail/?timetableNo=S8001-001-001" target="_blank">船班時間</a></li>
+                    </ol>
+                </div>
+            </div>
+            <div class="photo-grid">
+                <div class="photo-placeholder"><img src="img/day3-1.jpg" alt=""></div>
+                <div class="photo-placeholder"><img src="img/day3-2.webp" alt=""></div>
+                <div class="photo-placeholder"><img src="img/day3-3.webp" alt=""></div>
             </div>
         </div>
-        <div class="photo-grid">
-            <div class="photo-placeholder"><img src="img/day3-1.jpg" alt=""></div>
-            <div class="photo-placeholder"><img src="img/day3-2.webp" alt=""></div>
-            <div class="photo-placeholder"><img src="img/day3-3.webp" alt=""></div>
-        </div>
         <!-- DAY 3 (備案-熱海) -->
-        <div class="day-card">
-            <h2>(備案) | 熱海・神社與庭園⛩️</h2>
+        <div id="day3-atami" class="day3-route-panel">
             <div class="table-container">
                 <table>
                     <tr>
@@ -524,7 +521,7 @@
                     <td>回程OUTLET → 飯店(放戰利品) → 茜家</td>
                 </tr>
                 <tr>
-                    <th>17:30-20:00</th>
+                    <th>18:00-20:00</th>
                     <td>晚餐 <a href="https://maps.app.goo.gl/zWUfChCm6L5JqYAS9" target="_blank">一鳥二炭</a>(茜推薦)</td>
                 </tr>
                 <tr>
@@ -541,6 +538,7 @@
                 <ol>
                     <li>飯店不含早餐，提前購買隔日要吃的東西</li>
                     <li>(貝)購買橫濱精釀可樂</li>
+                    <li>橫濱車站購買成田快線車票</li>
                 </ol>
             </div>
         </div>
@@ -613,14 +611,26 @@
                     <td>飯店check out</td>
                 </tr>
                 <tr>
-                    <th>08:30-10:15</th>
-                    <td>前往機場（車上吃早餐）</td>
+                    <th>08:10-10:00</th>
+                    <td>前往機場(車上吃早餐)</td>
+                </tr>
+                <tr>
+                    <th>12:30-15:10</th>
+                    <td>酷航TR867-飛往台灣(含時差)</td>
                 </tr>
                 <tr>
                     <th>返台</th>
-                    <td>搭高鐵（8/27搶中秋高鐵票）</td>
+                    <td>搭高鐵(8/27搶中秋高鐵票)</td>
                 </tr>
             </table>
+            <div class="footer">
+                <b>📢 提醒：</b>
+                <ol>
+                    <li>個人物品1件，手提1件10kg，托運20kg</li>
+                    <li>SHAKE SHACK/鰻魚飯，第一航廈中央大樓4樓</li>
+                    <li>整理行李，電池產品請放手提</li>
+                </ol>
+            </div>
         </div>
     </div>
     <!-- 原生 JavaScript 互動邏輯 -->
@@ -657,33 +667,21 @@
         });
     }
 
-    // 動態新增個人代辦事項（支援 4 位使用者，並支援文字直接編輯）
-    let todoCounter = 9;
-
-    function addCustomTodo()
+    function switchDay3Plan(planId, btnElement)
     {
-        const input = document.getElementById('customTodoInput');
-        const userSelect = document.getElementById('userSelect');
-        const checklist = document.getElementById('checklist');
+        const buttons = document.querySelectorAll('#day3 .route-tab-btn');
+        const panels = document.querySelectorAll('#day3 .day3-route-panel');
 
-        const text = input.value.trim();
-        if (!text)
+        buttons.forEach(btn => btn.classList.remove('active'));
+        panels.forEach(panel => panel.classList.remove('active'));
+
+        const targetPanel = document.getElementById(planId);
+        if (targetPanel)
         {
-            alert('請輸入代辦事項內容！');
-            return;
+            targetPanel.classList.add('active');
         }
 
-        const userName = userSelect.value;
-        const itemId = 'custom_item_' + (todoCounter++);
-
-        const li = document.createElement('li');
-        li.innerHTML = `
-                <input type="checkbox" id="${itemId}">
-                <label for="${itemId}" contenteditable="true" title="點擊即可直接編輯文字">[${userName}] ${text}</label>
-            `;
-
-        checklist.appendChild(li);
-        input.value = '';
+        btnElement.classList.add('active');
     }
     </script>
 </body>
